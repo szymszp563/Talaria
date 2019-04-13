@@ -1,5 +1,8 @@
 package com.example.talaria;
 
+import android.content.Context;
+import android.view.View;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,7 +18,7 @@ public class SocketConnection {
 
     private Socket socket;
 
-    public boolean initConnect(boolean isServer, String IP) throws IOException {
+    public boolean initConnect(boolean isServer, String IP, View appView) throws IOException {
 
         BufferedReader input;
         PrintWriter output;
