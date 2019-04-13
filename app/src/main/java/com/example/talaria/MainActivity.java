@@ -34,14 +34,16 @@ public class MainActivity extends AppCompatActivity {
         bClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ConnectionThread t = new ConnectionThread("5.173.136.213", false, v);
+                t.start();
             }
         });
 
         bServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ConnectionThread t = new ConnectionThread("", true, v);
+                t.start();
             }
         });
 
