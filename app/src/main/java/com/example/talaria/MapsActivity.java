@@ -70,16 +70,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 if (myCustomerMarker != null) {
-                    myCustomerMarker.remove();
+                    myLocation = gpsTracker.getLocation();
+                    latitude = myLocation.getLatitude();
+                    longitude = myLocation.getLongitude();
+                    myCustomerMarker.setPosition(new LatLng(latitude,longitude));
                 }
-                myLocation = gpsTracker.getLocation();
-                latitude = myLocation.getLatitude();
-                longitude = myLocation.getLongitude();
-                LatLng myCustomerLatLng = new LatLng(latitude, longitude);
-                MarkerOptions options = new MarkerOptions();
-                options.position(myCustomerLatLng);
-                options.title(latitude.toString());
-                myCustomerMarker = mMap.addMarker(options);
+
                 handler.postDelayed(this,500); // set time here to refresh textView
             }
         });
