@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Talaria</string>
+    <string name="show_map">Show Map</string>
+    <string name="get_position">Get Position</string>
+    <string name="clear">Clear</string>
+    <string name="press_any_key_to_show_sth">Press any key to show sth</string>
 </resources>
