@@ -32,7 +32,7 @@ public class GPSTracker extends Service implements LocationListener {
 
             if (isGPSEnabled) {
                 if(location == null){
-                    locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1_000, 5, this);
+                    locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 100, 1, this);
                     if(locationManager != null){
                         location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
                     }

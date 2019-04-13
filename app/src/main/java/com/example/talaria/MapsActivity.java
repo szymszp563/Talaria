@@ -25,6 +25,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Double latitude = 0.0, longitude = 0.0;
     float zoomLevel;
     private Marker myCustomerMarker;
+    private float distancePassed = 0;
     Button centerMap;
 
 
