@@ -1,5 +1,6 @@
 package com.example.talaria;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -88,23 +89,26 @@ public class NavActivity extends AppCompatActivity
         Class fragmentClass = null;
 
         if (id == R.id.nav_run) {
-            fragmentClass = RunFragment.class;
-        } else if (id == R.id.nav_train) {
             fragmentClass = TrainFragment.class;
+        } else if (id == R.id.nav_train) {
+           fragmentClass = RunFragment.class;
+            Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_history) {
             fragmentClass = RunFragment.class;
         } else if (id == R.id.nav_rank) {
             fragmentClass = TrainFragment.class;
         }
+        if(fragmentClass!=null){
+            try{
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
 
-        try{
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e){
-            e.printStackTrace();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
         }
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
