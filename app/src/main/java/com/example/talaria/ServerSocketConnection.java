@@ -25,6 +25,10 @@ public class ServerSocketConnection {
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
+    public void close() throws IOException {
+        serverSocket.close();
+    }
+
     public Socket getSocket() {
         return socket;
     }

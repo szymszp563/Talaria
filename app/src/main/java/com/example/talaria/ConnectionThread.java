@@ -20,7 +20,7 @@ public class ConnectionThread extends Thread {
     public void run(){
         sConnection = new SocketConnection();
         try {
-            sConnection.initConnect(isServer, IP, appView);
+            sConnection.connect(isServer, IP, appView);
         } catch (IOException e) {
             e.printStackTrace();
         }

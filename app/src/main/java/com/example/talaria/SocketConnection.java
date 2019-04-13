@@ -1,6 +1,5 @@
 package com.example.talaria;
 
-import android.content.Context;
 import android.view.View;
 
 import java.io.BufferedReader;
@@ -18,19 +17,18 @@ public class SocketConnection {
 
     private Socket socket;
 
-    public boolean initConnect(boolean isServer, String IP, View appView) throws IOException {
+    public void connect(boolean isServer, String IP, View appView) throws IOException {
 
         BufferedReader input;
         PrintWriter output;
+        ServerSocketConnection ssConnection = null;
 
         if(isServer){ //create serversocket
-            ServerSocketConnection ssConnection = new ServerSocketConnection();
+            ssConnection = new ServerSocketConnection();
             ssConnection.initServerSocketConnection(port);
             socket = ssConnection.getSocket();
             input = ssConnection.getInput();
             output = ssConnection.getOutput();
-
-            //Connection never closed!!!!!
         }
         else { //connect to serversocket;
             ip = IP;
@@ -39,6 +37,12 @@ public class SocketConnection {
             output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         }
 
-        return true;
+        CommunicationService service = new CommunicationService(input, output, appView);
+        if(service.runSercive()){
+            socket.close();
+            if(ssConnection!=null){
+                ssConnection.close();
+            }
+        }
     }
 }
