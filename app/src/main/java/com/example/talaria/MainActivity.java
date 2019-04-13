@@ -4,11 +4,14 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,7 +29,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button bMap, bClear, bPosition, bClient, bServer;
+    Button bMap, bClear, bPosition, bClient, bServer, bNav;
     View view;
     TextView tvText;
 
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         bServer = (Button) findViewById(R.id.bServer);
         bClient = (Button) findViewById(R.id.bClient);
         view = (View) findViewById(R.id.mainLayout);
+        bNav = (Button) findViewById(R.id.nav);
+
 
         allPermissions =
                 new HandlePermission(this, appPermissions, this, REQUEST_LOCATION);
@@ -86,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-
         });
 
         bServer.setOnClickListener(new View.OnClickListener() {
@@ -111,11 +115,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        bNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent navIntent = new Intent(getApplicationContext(), NavActivity.class);
+                startActivity(navIntent);
+            }
+        });
+
         bMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mapActivityIntent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(mapActivityIntent);
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    Intent mapActivityIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(mapActivityIntent);
+                }
+                else
+                {
+                    showSettingsAlert("GPS");
+                }
             }
         });
     }
@@ -132,6 +151,34 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
         return alert;
+    }
+
+    public void showSettingsAlert(String provider) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+
+        alertDialog.setTitle(provider + " SETTINGS");
+
+        alertDialog
+                .setMessage(provider + " is not enabled! Want to go to settings menu?");
+
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
     }
 
     @Override
