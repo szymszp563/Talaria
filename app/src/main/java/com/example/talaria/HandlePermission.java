@@ -6,59 +6,34 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HandlePermission {
-    private boolean accessGranted = false;
     private Context context;
-    private String permission;
+    private String[] permissions;
     private Activity activity;
     private int requestCode;
 
-    public boolean getAccessGranted() {
-        return accessGranted;
-    }
-
-    public void setAccessGranted(boolean granted) {
-        accessGranted = granted;
-    }
-
-    HandlePermission(Context context, String permission, Activity activity, int requestCode){
-        this.permission=permission;
+    HandlePermission(Context context, String[] permissions, Activity activity, int requestCode){
+        this.permissions=permissions;
         this.context=context;
         this.activity=activity;
         this.requestCode=requestCode;
-        getAccess();
     }
 
-    public void getAccess(){
-
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(context,
-                permission)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                    permission)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{permission}, requestCode);
-            } else {
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{permission}, requestCode);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
+    public boolean checkAndRequestPermissions(){
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for(String permission:permissions){
+            if(ContextCompat.checkSelfPermission(context,permission)!=PackageManager.PERMISSION_GRANTED){
+                listPermissionsNeeded.add(permission);
             }
-        } else {
-            accessGranted = true;
         }
+        if(!listPermissionsNeeded.isEmpty()){
+            ActivityCompat.requestPermissions(activity,listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),requestCode);
+            return false;
+        }
+        return true;
     }
-
-
 
 }
