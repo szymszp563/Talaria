@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -70,10 +71,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 if (myCustomerMarker != null) {
+                    Location oldLocation = myLocation;
                     myLocation = gpsTracker.getLocation();
+                    Float distance = oldLocation.distanceTo(myLocation);
                     latitude = myLocation.getLatitude();
                     longitude = myLocation.getLongitude();
                     myCustomerMarker.setPosition(new LatLng(latitude,longitude));
+                    if(distance != 0.0f)
+                        Toast.makeText(getApplicationContext(), "Distance between updates: " + distance.toString() + "m", Toast.LENGTH_SHORT).show();
                 }
 
                 handler.postDelayed(this,500); // set time here to refresh textView
