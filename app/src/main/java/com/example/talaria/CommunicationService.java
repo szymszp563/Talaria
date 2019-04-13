@@ -1,5 +1,6 @@
 package com.example.talaria;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ public class CommunicationService {
         tv.setText("CONNECTED");
         EditText et = (EditText)appView.findViewById(R.id.etMessage);
         String message = "";
+
         while(true){
             if(input.ready()) {
                 message = input.readLine();

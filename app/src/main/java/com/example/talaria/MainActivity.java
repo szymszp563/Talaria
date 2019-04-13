@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         tvText = (TextView) findViewById(R.id.tvText);
         bServer = (Button) findViewById(R.id.bServer);
         bClient = (Button) findViewById(R.id.bClient);
+        final View view = (View) findViewById(R.id.mainLayout);
 
         fineLocation =
                 new HandlePermission(this, Manifest.permission.ACCESS_FINE_LOCATION, this,REQUEST_LOCATION);
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         bClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectionThread t = new ConnectionThread("5.173.136.213", false, v);
+                ConnectionThread t = new ConnectionThread("5.173.136.213", false, view);
                 t.start();
             }
         });
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         bServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectionThread t = new ConnectionThread("", true, v);
+                ConnectionThread t = new ConnectionThread("", true, view);
                 t.start();
             }
         });
