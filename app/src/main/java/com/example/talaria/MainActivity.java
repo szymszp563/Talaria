@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         bPosition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvText.setText("Gówno w dupie a nie position");
+                tvText.setText("Here will be position");
             }
         });
     }
