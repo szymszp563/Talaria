@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button bMap, bClear, bPosition, bClient, bServer;
+    Button bMap, bClear, bPosition, bClient, bServer, bNav;
     View view;
     TextView tvText;
 
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         bServer = (Button) findViewById(R.id.bServer);
         bClient = (Button) findViewById(R.id.bClient);
         view = (View) findViewById(R.id.mainLayout);
+        bNav = (Button) findViewById(R.id.nav);
 
 
         allPermissions =
@@ -83,6 +84,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tvText.setText("Here will be position, przemo");
+            }
+        });
+
+        bNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent navIntent = new Intent(getApplicationContext(), NavActivity.class);
+                startActivity(navIntent);
             }
         });
 
