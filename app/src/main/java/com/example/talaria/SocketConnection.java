@@ -1,5 +1,6 @@
 package com.example.talaria;
 
+import android.util.Log;
 import android.view.View;
 
 import java.io.BufferedReader;
@@ -17,32 +18,37 @@ public class SocketConnection {
 
     private Socket socket;
 
-    public void connect(boolean isServer, String IP, View appView) throws IOException {
+    public void connect(boolean isServer, String IP, View appView) {
 
         BufferedReader input;
         PrintWriter output;
         ServerSocketConnection ssConnection = null;
 
-        if(isServer){ //create serversocket
-            ssConnection = new ServerSocketConnection();
-            ssConnection.initServerSocketConnection(port);
-            socket = ssConnection.getSocket();
-            input = ssConnection.getInput();
-            output = ssConnection.getOutput();
-        }
-        else { //connect to serversocket;
-            ip = IP;
-            socket = new Socket(ip, port); //throws IOException
-            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-        }
-
-        CommunicationService service = new CommunicationService(input, output, appView);
-        if(service.runSercive()){
-            socket.close();
-            if(ssConnection!=null){
-                ssConnection.close();
+        try {
+            if (isServer) { //create serversocket
+                ssConnection = new ServerSocketConnection();
+                ssConnection.initServerSocketConnection(port);
+                socket = ssConnection.getSocket();
+                input = ssConnection.getInput();
+                output = ssConnection.getOutput();
+            } else { //connect to serversocket;
+                ip = IP;
+                socket = new Socket(ip, port); //throws IOException
+                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
             }
+
+            CommunicationService service = new CommunicationService(input, output, appView);
+            Log.d("SOCKET",socket.getInetAddress().toString());
+            if (service.runSercive()) {
+                socket.close();
+                if (ssConnection != null) {
+                    ssConnection.close();
+                }
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
         }
     }
 }

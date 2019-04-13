@@ -1,5 +1,7 @@
 package com.example.talaria;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.net.Socket;
 
 public class ServerSocketConnection {
 
-    private Socket socket;
+    private Socket socket = null;
     private ServerSocket serverSocket;
 
     private BufferedReader input;
@@ -20,7 +22,9 @@ public class ServerSocketConnection {
 
     public void initServerSocketConnection(Integer port) throws IOException {
         serverSocket = new ServerSocket(port);
+        Log.d("SERWER", "JESTEM");
         socket = serverSocket.accept();
+        Log.d("SERWER", "JESTEM ZA SOCKETEM");
         output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
