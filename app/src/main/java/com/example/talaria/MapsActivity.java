@@ -1,14 +1,18 @@
 package com.example.talaria;
 
 import android.location.Location;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -16,8 +20,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private GPSTracker gpsTracker;
     private Location myLocation;
-    double latitude, longitude;
+    Double latitude, longitude;
     float zoomLevel;
+    private Marker myCustomerMarker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +54,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        LatLng myCustomerLatLng = new LatLng(latitude, longitude);
+        MarkerOptions options = new MarkerOptions();
+        options.position(myCustomerLatLng);
+        options.title("You are here");
+        myCustomerMarker = mMap.addMarker(options);
+
         // Add a marker in Sydney and move the camera
-        LatLng myLatLng = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(myLatLng).title("You are here."));
+       // LatLng myLatLng = new LatLng(latitude, longitude);
+
+       // mMap.addMarker(new MarkerOptions().position(myLatLng).title("You are here."));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, zoomLevel), 1000, null);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myCustomerLatLng, zoomLevel), 1000, null);
+        final Handler handler = new Handler();
+        handler.post(new Runnable(){
+            @Override
+            public void run() {
+                if (myCustomerMarker != null) {
+                    Location oldLocation = myLocation;
+                    myLocation = gpsTracker.getLocation();
+                    Float distance = oldLocation.distanceTo(myLocation);
+                    latitude = myLocation.getLatitude();
+                    longitude = myLocation.getLongitude();
+                    myCustomerMarker.setPosition(new LatLng(latitude,longitude));
+                    if(distance != 0.0f)
+                        Toast.makeText(getApplicationContext(), "Distance between updates: " + distance.toString() + "m", Toast.LENGTH_SHORT).show();
+                }
+
+                handler.postDelayed(this,500); // set time here to refresh textView
+            }
+        });
     }
 
 
