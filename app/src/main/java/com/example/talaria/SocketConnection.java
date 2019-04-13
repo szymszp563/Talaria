@@ -14,16 +14,20 @@ public class SocketConnection {
     private final static Integer port = 8080;
 
     private Socket socket;
-    private ServerSocketConnection ssConnection;
-
-    private BufferedReader input;
-    private PrintWriter output;
 
     public boolean initConnect(boolean isServer, String IP) throws IOException {
 
+        BufferedReader input;
+        PrintWriter output;
+
         if(isServer){ //create serversocket
-            ssConnection = new ServerSocketConnection();
+            ServerSocketConnection ssConnection = new ServerSocketConnection();
             ssConnection.initServerSocketConnection(port);
+            socket = ssConnection.getSocket();
+            input = ssConnection.getInput();
+            output = ssConnection.getOutput();
+
+            //Connection never closed!!!!!
         }
         else { //connect to serversocket;
             ip = IP;

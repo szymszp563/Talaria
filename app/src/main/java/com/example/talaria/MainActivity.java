@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
 
-    Button bMap, bClear, bPosition;
+    Button bMap, bClear, bPosition, bClient, bServer;
     TextView tvText;
 
 
@@ -23,6 +23,22 @@ public class MainActivity extends AppCompatActivity {
         bClear = (Button) findViewById(R.id.bClear);
         bPosition = (Button) findViewById(R.id.bGetPosition);
         tvText = (TextView) findViewById(R.id.tvText);
+        bServer = (Button) findViewById(R.id.bServer);
+        bClient = (Button) findViewById(R.id.bClient);
+
+        bClient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        bServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         bClear.setOnClickListener(new View.OnClickListener() {
             @Override
