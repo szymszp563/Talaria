@@ -1,5 +1,6 @@
 package com.example.talaria;
 
+import android.util.Log;
 import android.view.View;
 
 import java.io.BufferedReader;
@@ -38,6 +39,7 @@ public class SocketConnection {
             }
 
             CommunicationService service = new CommunicationService(input, output, appView);
+            Log.d("SOCKET",socket.getInetAddress().toString());
             if (service.runSercive()) {
                 socket.close();
                 if (ssConnection != null) {

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         bClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectionThread t = new ConnectionThread("5.173.136.213", false, view);
+                ConnectionThread t = new ConnectionThread("94.254.233.37", false, view);
                 t.start();
             }
         });
