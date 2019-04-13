@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button bMap, bClear, bPosition, bClient, bServer, bNav;
+    Button bMap, bClear, bPosition, bClient, bServer, bNav, bSignIn, bSignUp;
     View view;
     TextView tvText;
 
@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         bClient = (Button) findViewById(R.id.bClient);
         view = (View) findViewById(R.id.mainLayout);
         bNav = (Button) findViewById(R.id.nav);
+        bSignIn = (Button) findViewById(R.id.bLoginPage);
+        bSignUp = (Button) findViewById(R.id.bRegisterPage);
 
 
         allPermissions =
@@ -90,6 +92,22 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+            }
+        });
+
+        bSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent loginIntent = new Intent(getApplicationContext(), Logging.class);
+                startActivity(loginIntent);
+            }
+        });
+
+        bSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent registerIntent = new Intent(getApplicationContext(), Register.class);
+                startActivity(registerIntent);
             }
         });
 
