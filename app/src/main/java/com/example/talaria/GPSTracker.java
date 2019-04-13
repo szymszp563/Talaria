@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 public class GPSTracker extends Service implements LocationListener {
 
@@ -59,6 +60,7 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        this.setLocation(location);
 
     }
 
