@@ -10,12 +10,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,8 +68,28 @@ public class MainActivity extends AppCompatActivity {
         bClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectionThread t = new ConnectionThread("5.173.136.213", false, view);
-                t.start();
+                //ConnectionThread t = new ConnectionThread("37.47.50.247", false, view);
+                //t.start();
+                Socket socket = null;
+                try {
+                    socket = IO.socket("http://51.38.134.31:3000/");
+                    socket.connect();
+                    //socket.emit("event", "ILYES");
+
+                    socket.on("test", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                             JSONObject data = (JSONObject)args[0];
+//                            Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_SHORT).show();
+                            Log.d("CONNECTION", "JSON LECI");
+                        }
+                    });
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
         });
 

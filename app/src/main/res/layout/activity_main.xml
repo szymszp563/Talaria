@@ -10,8 +10,8 @@
 
     <Button
         android:id="@+id/bClient"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -21,15 +21,15 @@
         android:text="Be a client"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.773"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintStart_toEndOf="@+id/bServer"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.362" />
 
     <Button
         android:id="@+id/bShowMap"
-        android:layout_width="111dp"
-        android:layout_height="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -45,38 +45,32 @@
 
     <Button
         android:id="@+id/bGetPosition"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="56dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="56dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/get_position"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.604"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.127" />
+        app:layout_constraintTop_toBottomOf="@+id/bShowMap" />
 
     <Button
         android:id="@+id/bClear"
-        android:layout_width="161dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/clear"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.223" />
+        app:layout_constraintTop_toBottomOf="@+id/bGetPosition" />
 
     <TextView
         android:id="@+id/tvText"
@@ -100,7 +94,7 @@
 
     <Button
         android:id="@+id/bServer"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -111,7 +105,7 @@
         android:text="Be a server"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.362" />

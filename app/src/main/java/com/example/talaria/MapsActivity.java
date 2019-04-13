@@ -78,6 +78,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         myCustomerMarker = mMap.addMarker(options);
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myCustomerLatLng, zoomLevel), 1000, null);
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().isZoomControlsEnabled();
+
         final Handler handler = new Handler();
         handler.post(new Runnable(){
             @Override

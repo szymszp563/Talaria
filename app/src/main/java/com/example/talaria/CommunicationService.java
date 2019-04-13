@@ -20,19 +20,23 @@ public class CommunicationService {
         appView = av;
     }
 
-    public boolean runSercive() throws IOException {
+    public boolean runSercive(){
         TextView tv = (TextView)appView.findViewById(R.id.tvText);
         tv.setText("CONNECTED");
         EditText et = (EditText)appView.findViewById(R.id.etMessage);
         String message = "";
 
         while(true){
-            if(input.ready()) {
-                message = input.readLine();
-                tv = (TextView) appView.findViewById(R.id.tvText);
-                tv.setText("Message from your opponent: " + message);
-                if(message.toUpperCase().equals("QUIT"))
-                    break;
+            try {
+                if(input.ready()) {
+                    message = input.readLine();
+                    tv = (TextView) appView.findViewById(R.id.tvText);
+                    tv.setText("Message from your opponent: " + message);
+                    if(message.toUpperCase().equals("QUIT"))
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
             message = et.getText().toString();
