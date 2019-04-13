@@ -17,6 +17,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GPSTracker gpsTracker;
     private Location myLocation;
     double latitude, longitude;
+    float zoomLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         myLocation = gpsTracker.getLocation();
         latitude = myLocation.getLatitude();
         longitude = myLocation.getLongitude();
+        zoomLevel = 16.0f;
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -49,7 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng myLatLng = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(myLatLng).title("You are here."));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+       // mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, zoomLevel), 1000, null);
     }
 
 
