@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         bClient = (Button) findViewById(R.id.bClient);
         view = (View) findViewById(R.id.mainLayout);
 
+
         allPermissions =
                 new HandlePermission(this, appPermissions, this, REQUEST_LOCATION);
         if (allPermissions.checkAndRequestPermissions()) {
