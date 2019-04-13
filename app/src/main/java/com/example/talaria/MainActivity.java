@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +16,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
 
-    Button bMap, bClear, bPosition, bClient, bServer;
+    Button bMap, bClear, bPosition, bClient, bServer, bNav;
     TextView tvText;
     private static final int REQUEST_LOCATION = 123;
     //permissions
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         tvText = (TextView) findViewById(R.id.tvText);
         bServer = (Button) findViewById(R.id.bServer);
         bClient = (Button) findViewById(R.id.bClient);
+        bNav = (Button) findViewById(R.id.nav);
         final View view = (View) findViewById(R.id.mainLayout);
 
         fineLocation =
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         bClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectionThread t = new ConnectionThread("5.173.136.213", false, view);
+                ConnectionThread t = new ConnectionThread("51.254.233.37", false, view);
                 t.start();
             }
         });
@@ -79,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
                    Toast.makeText(getApplicationContext(), "Enable localisation!", Toast.LENGTH_SHORT).show();
                }
 
+            }
+        });
+
+        bNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent navIntent = new Intent(getApplicationContext(), NavActivity.class);
+                startActivity(navIntent);
             }
         });
 
