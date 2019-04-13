@@ -1,26 +1,38 @@
 package com.example.talaria;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
-
     Button bMap, bClear, bPosition, bClient, bServer;
+    View view;
     TextView tvText;
-    private static final int REQUEST_LOCATION = 123;
+
     //permissions
-    HandlePermission fineLocation;
-    HandlePermission coarseLocation;
+    private static final int REQUEST_LOCATION = 123;
+    HandlePermission allPermissions;
+    String[] appPermissions = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +44,17 @@ public class MainActivity extends AppCompatActivity {
         tvText = (TextView) findViewById(R.id.tvText);
         bServer = (Button) findViewById(R.id.bServer);
         bClient = (Button) findViewById(R.id.bClient);
-        final View view = (View) findViewById(R.id.mainLayout);
+        view = (View) findViewById(R.id.mainLayout);
 
-        fineLocation =
-                new HandlePermission(this, Manifest.permission.ACCESS_FINE_LOCATION, this,REQUEST_LOCATION);
-        coarseLocation =
-                new HandlePermission(this, Manifest.permission.ACCESS_COARSE_LOCATION, this,REQUEST_LOCATION);
+        allPermissions =
+                new HandlePermission(this, appPermissions, this, REQUEST_LOCATION);
+        if (allPermissions.checkAndRequestPermissions()) {
+            initApp();
+        }
 
+    }
+
+    private void initApp() {
         bClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,56 +88,104 @@ public class MainActivity extends AppCompatActivity {
         bMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(fineLocation.getAccessGranted() || coarseLocation.getAccessGranted()){
-                   Intent mapActivityIntent = new Intent(getApplicationContext(), MapsActivity.class);
-                   startActivity(mapActivityIntent);
-               }else{
-                   Toast.makeText(getApplicationContext(), "Enable localisation!", Toast.LENGTH_SHORT).show();
-               }
-
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    Intent mapActivityIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(mapActivityIntent);
+                }
+                else
+                {
+                    showSettingsAlert("GPS");
+                }
             }
         });
-
-
-
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    public AlertDialog showDialog(String title, String msg, String positiveLabel, DialogInterface.OnClickListener positiveOnClick,
+                                  String negativeLabel, DialogInterface.OnClickListener negativeOnClick, boolean isCancelAble) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(isCancelAble);
+        builder.setMessage(msg);
+        builder.setPositiveButton(positiveLabel, positiveOnClick);
+        builder.setNegativeButton(negativeLabel, negativeOnClick);
 
+        AlertDialog alert = builder.create();
+        alert.show();
+        return alert;
+    }
+
+    public void showSettingsAlert(String provider) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+
+        alertDialog.setTitle(provider + " SETTINGS");
+
+        alertDialog
+                .setMessage(provider + " is not enabled! Want to go to settings menu?");
+
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
-        Toast.makeText(getApplicationContext(), "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", Toast.LENGTH_SHORT).show();
-        switch (requestCode) {
-            case REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    for (String permission:permissions) {
-                        if(permission.equals(Manifest.permission.ACCESS_FINE_LOCATION))
-                            fineLocation.setAccessGranted(true);
-                        else if(permission.equals(Manifest.permission.ACCESS_COARSE_LOCATION))
-                            coarseLocation.setAccessGranted(true);
 
-                    }
-
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-
+        if (requestCode == REQUEST_LOCATION) {
+            HashMap<String, Integer> permissionResults = new HashMap<>();
+            int deniedCount = 0;
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    permissionResults.put(permissions[i], grantResults[i]);
+                    deniedCount++;
                 }
-                return;
             }
+            if (deniedCount == 0) {
+                initApp();
+            } else {
+                for (Map.Entry<String, Integer> entry : permissionResults.entrySet()) {
+                    String permissionName = entry.getKey();
+                    int permissionResult = entry.getValue();
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionName)) {
+                        showDialog("", "This app needs Location Permissions to work without any problems.",
+                                "Yes, grant permissions",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        allPermissions.checkAndRequestPermissions();
+                                    }
+                                }, "no exit app", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        finish();
 
-            // other 'case' lines to check for other
-            // permissions this app might request.
+                                    }
+                                }, false);
+                        break;
+                    }
+                }
+            }
         }
     }
 
 }
+
+
