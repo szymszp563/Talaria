@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         bPosition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvText.setText("Here will be position");
+                tvText.setText("Here will be position, przemo");
             }
         });
     }
