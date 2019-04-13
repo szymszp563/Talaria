@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerSocketConnection {
+public class ServerSocketConnection{
 
     private Socket socket = null;
     private ServerSocket serverSocket;
