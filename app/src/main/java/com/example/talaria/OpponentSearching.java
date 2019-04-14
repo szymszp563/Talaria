@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 public class OpponentSearching extends AppCompatActivity {
 
@@ -112,6 +113,24 @@ public class OpponentSearching extends AppCompatActivity {
                                         @Override
                                         public void call(Object... args) {
                                             Log.d("progressChanged", "JAKIS PROGRES PRZECIWNIKA");
+                                        }
+                                    });
+
+                                    anotherSocket.on("finish", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            JSONObject json = (JSONObject)args[0];
+                                            try {
+                                                String winnerId = json.getString("winnerId");
+                                                Date duration = new Date(json.getLong("time"));
+                                                if(winnerId.equals(clientId))
+                                                    Log.d("finish!", "Jestes zwyciezca!!!");
+                                                else
+                                                    Log.d("finish!", "Przegrales!!!");
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
                                         }
                                     });
 
