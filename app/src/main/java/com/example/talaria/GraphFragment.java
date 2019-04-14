@@ -12,10 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GraphFragment extends Fragment {
 
@@ -37,12 +48,55 @@ public class GraphFragment extends Fragment {
         double y,x;
         x = .5;
 
+        String filename = "/results";
+        File directory = getContext().getFilesDir();
+        String path = directory.getPath() + filename;
+        //File file = new File(directory, filename);
+        String line = null;
+        List<Double> values = new ArrayList<>();
+
+        try {
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader =
+                    new FileReader(path);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader =
+                    new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+                values.add(Double.parseDouble(line));
+            }
+
+            // Always close files.
+            bufferedReader.close();
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                    "Unable to open file '" +
+                            filename + "'");
+        }
+        catch(IOException ex) {
+            System.out.println(
+                    "Error reading file '"
+                            + filename + "'");
+            // Or we could just do this:
+            // ex.printStackTrace();
+        }
+        catch(Exception ex) {
+            System.out.println(
+                    ex.getMessage());
+            // Or we could just do this:
+            // ex.printStackTrace();
+        }
+
+        //Toast.makeText(view.getContext(), values.size(), Toast.LENGTH_SHORT).show();
+
         graph = view.findViewById(R.id.graph1);
         series = new LineGraphSeries<DataPoint>();
-        for(int i =0; i<100; i++) {
-            x = x + 0.1;
-            y = x*1.1;
-            series.appendData(new DataPoint(x, y), true, 100);
+        series.appendData(new DataPoint(0, 0), true, 100);
+        for(int i =0; i<values.size(); i++) {
+            series.appendData(new DataPoint(i + 1, values.get(i)), true, 100);
         }
         graph.addSeries(series);
 
