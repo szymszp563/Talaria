@@ -1,5 +1,6 @@
 package com.example.talaria;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,6 +64,8 @@ public class Logging extends AppCompatActivity {
                     String token = json.getString("token");
                     tk.setToken(token);
                     Log.d("TOKEN", tk.getToken());
+                    Intent navIntent = new Intent(getApplicationContext(), NavActivity.class);
+                    startActivity(navIntent);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {

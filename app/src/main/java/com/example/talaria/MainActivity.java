@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
         bSignUp = (Button) findViewById(R.id.bRegisterPage);
         bSOpp = (Button) findViewById(R.id.bSearchOpponent);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
 
 
         allPermissions =

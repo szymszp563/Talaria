@@ -1,5 +1,6 @@
 package com.example.talaria;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,6 +52,8 @@ public class Register extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    Intent registerIntent = new Intent(getApplicationContext(), Logging.class);
+                    startActivity(registerIntent);
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "ERROR IN DATA", Toast.LENGTH_SHORT).show();

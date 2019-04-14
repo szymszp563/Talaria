@@ -75,6 +75,7 @@ public class OpponentSearching extends AppCompatActivity {
                                     IO.Options o = new IO.Options();
                                     o.path = path;
                                     final Socket anotherSocket = IO.socket(roomUrl, o);
+                                    token.setSocket(anotherSocket);
                                     anotherSocket.connect();
                                     socket.close();
 
@@ -105,13 +106,14 @@ public class OpponentSearching extends AppCompatActivity {
                                         @Override
                                         public void call(Object... args) {
                                             Log.d("START", "Versus STARTED!");
-                                            anotherSocket.emit("progress", "3");
+                                            //anotherSocket.emit("progress", token.getMyDistance().toString()); //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>EMITER
                                         }
                                     });
 
                                     anotherSocket.on("progressChange", new Emitter.Listener() {
                                         @Override
                                         public void call(Object... args) {
+                                            token.setOpponentDistance(Float.parseFloat((String)args[0]));
                                             Log.d("progressChanged", "JAKIS PROGRES PRZECIWNIKA");
                                         }
                                     });
@@ -129,6 +131,8 @@ public class OpponentSearching extends AppCompatActivity {
                                                     Log.d("finish!", "Przegrales!!!");
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
+                                            } finally{
+                                                anotherSocket.disconnect();
                                             }
 
                                         }
@@ -154,4 +158,5 @@ public class OpponentSearching extends AppCompatActivity {
             }
         });
     }
+
 }
