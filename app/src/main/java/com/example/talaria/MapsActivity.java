@@ -199,6 +199,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         String filename = "results";
         String fileContents = distanceFromStart.toString();
+        fileContents+="\n";
         FileOutputStream outputStream;
 
         try {
@@ -208,6 +209,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Toast.makeText(getApplicationContext(), fileContents, Toast.LENGTH_SHORT).show();
     }
 
     private void resetDistanceAndPath()
