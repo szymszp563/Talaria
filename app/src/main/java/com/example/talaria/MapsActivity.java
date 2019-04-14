@@ -2,6 +2,7 @@ package com.example.talaria;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,8 +120,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             i.putExtra("DISTANCE", passedDistance);
 
                             //distView.setText(distanceFromStart.toString());
-                            Toast.makeText(getApplicationContext(), "Distance: " + didtancePassed.toString() + "m" + "Distance passed from beginning:"
-                                    + distanceFromStart.toString() + "m", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "Distance: " + didtancePassed.toString() + "m" + "Distance passed from beginning:"
+                                   // + distanceFromStart.toString() + "m", Toast.LENGTH_SHORT).show();
                             //distView.setText(distanceFromStart.toString());
                             //Toast.makeText(getApplicationContext(), "Distance: " + didtancePassed.toString() + "m" + "Distance passed from beginning:"
                               //      + distanceFromStart.toString() + "m", Toast.LENGTH_SHORT).show();
@@ -147,6 +149,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 afterCountDown = false;
                 endButton.setVisibility(View.INVISIBLE);
+                saveResultToFile();
+                resetDistanceAndPath();
             }
         });
     }
@@ -189,6 +193,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 null /* Looper */);
+    }
+
+    private void saveResultToFile()
+    {
+        String filename = "results";
+        String fileContents = distanceFromStart.toString();
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(fileContents.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void resetDistanceAndPath()
+    {
+        distanceFromStart = 0.0f;
+        startButton.setVisibility(View.VISIBLE);
+        knownUserLocations = new ArrayList<>();
+        usersPath.setPoints(knownUserLocations);
+        timeLeftInMiliseconds = 10_000;
     }
 
     /**
