@@ -56,6 +56,7 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "ERROR IN DATA", Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
     }
 }
