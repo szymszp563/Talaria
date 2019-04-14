@@ -110,13 +110,13 @@ public class NavActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_history) {
-            fragmentClass = RunFragment.class;
+            fragmentClass = GraphFragment.class;
         } else if (id == R.id.nav_rank) {
             fragmentClass = TrainFragment.class;
         }
         if(fragmentClass!=null){
             try{
-                fragment = (RunFragment) fragmentClass.newInstance();
+                fragment = (Fragment) fragmentClass.newInstance();
             } catch (Exception e){
                 e.printStackTrace();
             }
