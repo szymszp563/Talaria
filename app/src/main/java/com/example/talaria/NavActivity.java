@@ -26,6 +26,7 @@ public class NavActivity extends AppCompatActivity
         implements RunFragment.OnFragmentInteractionListener,
         TrainFragment.OnFragmentInteractionListener,
         GraphFragment.OnFragmentInteractionListener,
+        welcomeFragment.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -38,7 +39,7 @@ public class NavActivity extends AppCompatActivity
         if(savedInstanceState==null){
             //Load our fragment of exercises
             Fragment fragment = null;
-            Class fragmentClass =  GraphFragment.class;
+            Class fragmentClass =  welcomeFragment.class;
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
             } catch (Exception e) {
