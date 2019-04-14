@@ -2,6 +2,7 @@ package com.example.talaria;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
@@ -100,6 +101,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                         Float didtancePassed = myLocation.distanceTo(location);
                         distanceFromStart+=didtancePassed;
+                        Intent i = new Intent(MapsActivity.this, VersusActivity.class);
+                        Float passedDistance = distanceFromStart;
+                        i.putExtra("DISTANCE", passedDistance);
+
                         //distView.setText(distanceFromStart.toString());
                         Toast.makeText(getApplicationContext(), "Distance: " + didtancePassed.toString() + "m" + "Distance passed from beginning:"
                                 + distanceFromStart.toString() + "m", Toast.LENGTH_SHORT).show();
