@@ -94,7 +94,9 @@ public class NavActivity extends AppCompatActivity
         Class fragmentClass = null;
 
         if (id == R.id.nav_run) {
-            fragmentClass = RunFragment.class;
+            //fragmentClass = RunFragment.class;
+            Intent raceSettingsIntent = new Intent(getApplicationContext(), RaceSettingsActivity.class);
+            startActivity(raceSettingsIntent);
         } else if (id == R.id.nav_train) {
           // fragmentClass = RunFragment.class;
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);

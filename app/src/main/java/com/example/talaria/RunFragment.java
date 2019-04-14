@@ -74,17 +74,6 @@ public class RunFragment extends Fragment {
 
     }
 
-//    public void setView(View v){
-//        view = v;
-//    }
-
-
-
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//    }
 
     @Nullable
     @Override

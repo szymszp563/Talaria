@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".VersusActivity"></activity>
+        <activity android:name=".RaceSettingsActivity"></activity>
+        <activity android:name=".VersusActivity" />
         <activity
             android:name=".NavActivity"
             android:label="@string/title_activity_nav"
