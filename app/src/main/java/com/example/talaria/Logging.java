@@ -39,6 +39,7 @@ public class Logging extends AppCompatActivity {
     EditText etLogin, etPass;
 
     HttpRequestsCommander http;
+    TokenKeeper tk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class Logging extends AppCompatActivity {
         etLogin = (EditText) findViewById(R.id.etLogin);
         etPass = (EditText) findViewById(R.id.etPassword);
         bLogin = (Button) findViewById(R.id.bLogin);
+        tk = TokenKeeper.getInstance();
 
         http = new HttpRequestsCommander();
 
@@ -57,7 +59,13 @@ public class Logging extends AppCompatActivity {
                 try {
                     String resp = http.post("http://51.38.134.31:3501/v1/user/auth/login","{\"email\":\"" + etLogin.getText().toString() + "\",\"password\":\"" + etPass.getText().toString() + "\"}");
                     Log.d("CONN", resp);
+                    JSONObject json = new JSONObject(resp);
+                    String token = json.getString("token");
+                    tk.setToken(token);
+                    Log.d("TOKEN", tk.getToken());
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

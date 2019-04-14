@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button  bClear, bPosition, bClient, bServer, bNav, bSignIn, bSignUp;
+    Button  bClear, bPosition, bClient, bServer, bNav, bSignIn, bSignUp, bSOpp;
     View view;
     TextView tvText;
 
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         bNav = (Button) findViewById(R.id.nav);
         bSignIn = (Button) findViewById(R.id.bLoginPage);
         bSignUp = (Button) findViewById(R.id.bRegisterPage);
+        bSOpp = (Button) findViewById(R.id.bSearchOpponent);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -95,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+            }
+        });
+
+        bSOpp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent searchIntent = new Intent(getApplicationContext(), OpponentSearching.class);
+                startActivity(searchIntent);
             }
         });
 
