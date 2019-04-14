@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button bMap, bClear, bPosition, bClient, bServer, bNav, bSignIn, bSignUp;
+    Button  bClear, bPosition, bClient, bServer, bNav, bSignIn, bSignUp;
     View view;
     TextView tvText;
 
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bMap = (Button) findViewById(R.id.bShowMap);
         bClear = (Button) findViewById(R.id.bClear);
         bPosition = (Button) findViewById(R.id.bGetPosition);
         tvText = (TextView) findViewById(R.id.tvText);
@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         bNav = (Button) findViewById(R.id.nav);
         bSignIn = (Button) findViewById(R.id.bLoginPage);
         bSignUp = (Button) findViewById(R.id.bRegisterPage);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
 
         allPermissions =
@@ -138,21 +141,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent navIntent = new Intent(getApplicationContext(), NavActivity.class);
                 startActivity(navIntent);
-            }
-        });
-
-        bMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                    Intent mapActivityIntent = new Intent(getApplicationContext(), MapsActivity.class);
-                    startActivity(mapActivityIntent);
-                }
-                else
-                {
-                    showSettingsAlert("GPS");
-                }
             }
         });
     }
