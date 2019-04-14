@@ -55,6 +55,7 @@ public class VersusActivity extends AppCompatActivity {
     //private List<LatLng> knownUserLocations;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
+    TokenKeeper tk;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -66,7 +67,8 @@ public class VersusActivity extends AppCompatActivity {
         prb1.setMax(maxRoute);
         prb2.setMax(maxRoute);
         prb1.setProgress(30);
-        prb2.setProgress(30);
+        prb2.setProgress(40);
+        tk=TokenKeeper.getInstance();
 
         //gpsTracker = new GPSTracker(getApplicationContext());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -111,14 +113,18 @@ public class VersusActivity extends AppCompatActivity {
                        // Toast.makeText(getApplicationContext(), distanceFromStart.toString() + "m", Toast.LENGTH_SHORT).show();
 
 
-                        enemyCurrentRoute += 0.1f;//tutaj pobieranie
+                        enemyCurrentRoute = tk.getOpponentDistance();//tutaj pobieranie////////////////
+                        Toast.makeText(getApplicationContext(), "DOSTALEM " + enemyCurrentRoute, Toast.LENGTH_SHORT).show();
                         progressStatus = distanceFromStart;
+                        tk.setMyDistance(progressStatus);
+                        tk.emitProgress(progressStatus);
                         progressStatus2 = (int) (enemyCurrentRoute / maxRoute);
                        // prb1.setProgress(distanceFromStart.intValue());
                        // prb1.setProgress(distanceFromStart.intValue());
                         prb1.incrementProgressBy(didtancePassed.intValue());
-                        prb2.setProgress(progressStatus2);
-                        Toast.makeText(getApplicationContext(), "you are:" + distanceFromStart / maxRoute + "enemy: " + progressStatus2 / maxRoute, Toast.LENGTH_SHORT).show();
+                        prb2.incrementProgressBy(enemyCurrentRoute.intValue());
+                       // prb2.setProgress(enemyCurrentRoute.intValue());
+                        Toast.makeText(getApplicationContext(), "you are:" + distanceFromStart / (double)maxRoute + "enemy: " + enemyCurrentRoute, Toast.LENGTH_SHORT).show();
 
 
                         // If task execution completed

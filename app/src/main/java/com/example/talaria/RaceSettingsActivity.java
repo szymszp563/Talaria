@@ -119,6 +119,7 @@ public class RaceSettingsActivity extends AppCompatActivity {
                                         public void call(Object... args) {
                                             token.setOpponentDistance(Float.parseFloat((String)args[0]));
                                             Log.d("progressChanged", "JAKIS PROGRES PRZECIWNIKA");
+                                            Log.d("progressChange", (String)args[0]);
                                         }
                                     });
 
@@ -128,7 +129,7 @@ public class RaceSettingsActivity extends AppCompatActivity {
                                             JSONObject json = (JSONObject)args[0];
                                             try {
                                                 String winnerId = json.getString("winnerId");
-                                                Date duration = new Date(json.getLong("time"));
+                                                Date duration = new Date(Long.parseLong(json.getString("time")));
                                                 if(winnerId.equals(clientId))
                                                     Log.d("finish!", "Jestes zwyciezca!!!");
                                                 else
