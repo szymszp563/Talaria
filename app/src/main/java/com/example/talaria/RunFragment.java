@@ -1,6 +1,7 @@
 package com.example.talaria;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -91,6 +92,8 @@ public class RunFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("versus", "tralalal");
+                Intent intentVersus = new Intent(getContext(), VersusActivity.class);
+                startActivity(intentVersus);
             }
         });
         return view;
