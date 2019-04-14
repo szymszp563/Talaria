@@ -89,9 +89,9 @@ public class NavActivity extends AppCompatActivity
         Class fragmentClass = null;
 
         if (id == R.id.nav_run) {
-            fragmentClass = TrainFragment.class;
+            fragmentClass = RunFragment.class;
         } else if (id == R.id.nav_train) {
-           fragmentClass = RunFragment.class;
+           //fragmentClass = RunFragment.class;
             Intent i = new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_history) {
