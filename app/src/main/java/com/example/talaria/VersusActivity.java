@@ -71,7 +71,7 @@ public class VersusActivity extends Activity {
                                 @Override
                                 public void run() {
                                     pb.setProgress(progressStatus);
-                                    pb.setProgress(progressStatus2);
+                                    pb2.setProgress(progressStatus2);
                                     // Show the progress on TextView
                                     tv.setText(progressStatus + "");
                                     // If task execution completed
