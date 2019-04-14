@@ -31,8 +31,6 @@
         android:layout_marginLeft="26dp"
         android:layout_marginTop="9dp"
         android:layout_marginBottom="26dp"
-        android:max="100"
-        android:progress="50"
         android:progressDrawable="@drawable/progressbar_states"
         android:scaleX="25"
         android:scaleY="4" />
@@ -48,8 +46,6 @@
         android:layout_marginTop="9dp"
         android:layout_marginRight="26dp"
         android:layout_marginBottom="26dp"
-        android:max="100"
-        android:progress="50"
         android:progressDrawable="@drawable/progressbar_states2"
         android:scaleX="25"
         android:scaleY="4" />
