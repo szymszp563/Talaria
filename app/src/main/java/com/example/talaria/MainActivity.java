@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button bMap, bClear, bPosition, bClient, bServer, bNav, bSignIn, bSignUp;
+    Button  bClear, bPosition, bClient, bServer, bNav, bSignIn, bSignUp;
     View view;
     TextView tvText;
 
@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bMap = (Button) findViewById(R.id.bShowMap);
         bClear = (Button) findViewById(R.id.bClear);
         bPosition = (Button) findViewById(R.id.bGetPosition);
         tvText = (TextView) findViewById(R.id.tvText);
@@ -142,21 +141,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent navIntent = new Intent(getApplicationContext(), NavActivity.class);
                 startActivity(navIntent);
-            }
-        });
-
-        bMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                    Intent mapActivityIntent = new Intent(getApplicationContext(), MapsActivity.class);
-                    startActivity(mapActivityIntent);
-                }
-                else
-                {
-                    showSettingsAlert("GPS");
-                }
             }
         });
     }

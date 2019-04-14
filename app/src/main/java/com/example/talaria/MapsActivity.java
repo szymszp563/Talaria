@@ -1,12 +1,13 @@
 package com.example.talaria;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -33,7 +34,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location myLocation;
     Double latitude = 0.0, longitude = 0.0;
     float zoomLevel;
-    private static final long UPDATE_INTERVAL = 5000, FASTEST_INTERVAL = 5000; // = 5 seconds
+    Float distanceFromStart = 0.0f;
+    private static final long UPDATE_INTERVAL = 100, FASTEST_INTERVAL = 100; // = 0,1 seconds
+    //TextView distView = findViewById(R.id.distText);
 
     private Polyline usersPath;
     private FusedLocationProviderClient fusedLocationClient;
@@ -96,7 +99,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(myLocation != null)
                     {
                         Float didtancePassed = myLocation.distanceTo(location);
-                        Toast.makeText(getApplicationContext(), "Distance: " + didtancePassed.toString() + "m", Toast.LENGTH_SHORT).show();
+                        distanceFromStart+=didtancePassed;
+                        //distView.setText(distanceFromStart.toString());
+                        Toast.makeText(getApplicationContext(), "Distance: " + didtancePassed.toString() + "m" + "Distance passed from beginning:"
+                                + distanceFromStart.toString() + "m", Toast.LENGTH_SHORT).show();
                     }
                    myLocation = location;
                 }
@@ -104,6 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
     }
 
+    @SuppressLint("MissingPermission")
     private void startLocationUpdates() {
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(UPDATE_INTERVAL);
@@ -124,6 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
