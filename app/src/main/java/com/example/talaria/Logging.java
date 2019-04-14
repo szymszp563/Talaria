@@ -9,22 +9,36 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
+import com.android.volley.AuthFailureError;
+//import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
+//import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
+//import okhttp3.MediaType;
+
 
 public class Logging extends AppCompatActivity {
 
     Button bLogin;
     EditText etLogin, etPass;
+
+    HttpRequestsCommander http;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,51 +49,18 @@ public class Logging extends AppCompatActivity {
         etPass = (EditText) findViewById(R.id.etPassword);
         bLogin = (Button) findViewById(R.id.bLogin);
 
+        http = new HttpRequestsCommander();
+
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                String url ="http://51.38.134.31:3501/v1/user/auth/login";
-                JSONObject json = new JSONObject();
                 try {
-                    json.put("email", etLogin.getText().toString()).put("password", etPass.getText().toString());
-                    Log.d("JSON", json.toString());
-                } catch (JSONException e) {
+                    String resp = http.post("http://51.38.134.31:3501/v1/user/auth/login","{\"email\":\"" + etLogin.getText().toString() + "\",\"password\":\"" + etPass.getText().toString() + "\"}");
+                    Log.d("CONN", resp);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, url, json,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                // Display the first 500 characters of the response string.
-                                Toast.makeText(getApplicationContext(), "Response is: "+ response.toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Register doesnt work :(", Toast.LENGTH_SHORT).show();
-                        if (error == null || error.networkResponse == null) {
-                            return;
-                        }
-
-                        String body;
-                        //get status code here
-                        final String statusCode = String.valueOf(error.networkResponse.statusCode);
-                        //get response body and parse with appropriate encoding
-                        try {
-                            body = new String(error.networkResponse.data,"UTF-8");
-                            Log.d("ERROR", body);
-                        } catch (UnsupportedEncodingException e) {
-                            // exception
-                        }
-                    }
-                });
-
-// Add the request to the RequestQueue.
-                queue.add(stringRequest);
-
-        }
-    });
-}
+            }
+        });
+    }
 }

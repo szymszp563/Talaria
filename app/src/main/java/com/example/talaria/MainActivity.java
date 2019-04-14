@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         bNav = (Button) findViewById(R.id.nav);
         bSignIn = (Button) findViewById(R.id.bLoginPage);
         bSignUp = (Button) findViewById(R.id.bRegisterPage);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
 
         allPermissions =
