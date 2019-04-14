@@ -203,7 +203,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         FileOutputStream outputStream;
 
         try {
-            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream = openFileOutput(filename, Context.MODE_APPEND);
             outputStream.write(fileContents.getBytes());
             outputStream.close();
         } catch (Exception e) {
