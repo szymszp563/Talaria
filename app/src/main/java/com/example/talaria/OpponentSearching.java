@@ -12,6 +12,7 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class OpponentSearching extends AppCompatActivity {
                             token.getToken());
                     etResponse.setText(response);
                     //////////////////////////////////////////////////////////////////
-                    Socket socket = null;
+
 
                     try {
                         JSONObject json = new JSONObject(response);
@@ -51,7 +52,7 @@ public class OpponentSearching extends AppCompatActivity {
                         Log.d("ADRES", IP);
                         IO.Options opt = new IO.Options();
                         opt.path = json.getString("path");
-                        socket = IO.socket(IP, opt);
+                        final Socket socket = IO.socket(IP, opt);
                         socket.connect();
 
                         //socket.emit("event", "ILYES");
@@ -61,7 +62,65 @@ public class OpponentSearching extends AppCompatActivity {
                             public void call(Object... args) {
                                 JSONObject data = (JSONObject)args[0];
 //                            Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_SHORT).show();
-                                Log.d("CONNECTION", "JSON LECI");
+                                Log.d("JSON", data.toString());
+                                String roomUrl, path;
+                                try {
+                                    JSONObject important = data.getJSONObject("data");
+                                    roomUrl = important.getString("roomUrl");
+                                    final String clientId = important.getString("clientId");
+                                    path = important.getString("path");
+                                    Log.d("WYLUSKANE", roomUrl + "XX" + clientId + "XX" + path);
+
+                                    IO.Options o = new IO.Options();
+                                    o.path = path;
+                                    final Socket anotherSocket = IO.socket(roomUrl, o);
+                                    anotherSocket.connect();
+                                    socket.close();
+
+                                    anotherSocket.on("userConnected", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            Log.d("userConnected", "JAKIS PROGRES PRZECIWNIKA");
+                                            anotherSocket.emit("join", clientId);
+                                        }
+                                    });
+
+                                    anotherSocket.on("ready", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            Log.d("READY", "Ready event occured");
+                                        }
+                                    });
+
+                                    anotherSocket.on("countdown", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            Integer counter = (Integer)args[0];
+                                            Log.d("COUNTDOWN", counter.toString());
+                                        }
+                                    });
+
+                                    anotherSocket.on("start", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            Log.d("START", "Versus STARTED!");
+                                            anotherSocket.emit("progress", "3");
+                                        }
+                                    });
+
+                                    anotherSocket.on("progressChange", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            Log.d("progressChanged", "JAKIS PROGRES PRZECIWNIKA");
+                                        }
+                                    });
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (URISyntaxException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         });
                     } catch (URISyntaxException e) {
