@@ -5,12 +5,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,13 +38,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Float distanceFromStart = 0.0f;
     private static final long UPDATE_INTERVAL = 100, FASTEST_INTERVAL = 100; // = 0,1 seconds
     //TextView distView = findViewById(R.id.distText);
-    TextView timerView;
-    Button startButton;
-    Button endButton;
-    CountDownTimer countDownTimer;
-    long timeLeftInMiliseconds = 10_000;
-    boolean timerRunnging = false;
-    boolean afterCountDown = false;
 
     private Polyline usersPath;
     private FusedLocationProviderClient fusedLocationClient;
@@ -92,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (location != null) {
                             knownUserLocations.add(new LatLng(location.getLatitude(), location.getLongitude()));
                             usersPath.setPoints(knownUserLocations);
-                            //Toast.makeText(getApplicationContext(), "CALLBACK", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "CALLBACK", Toast.LENGTH_SHORT).show();
                             myLocation = location;
                         }
                     }
@@ -105,71 +95,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    if(afterCountDown)
+                    knownUserLocations.add(new LatLng(location.getLatitude(), location.getLongitude()));
+                    usersPath.setPoints(knownUserLocations);
+                    if(myLocation != null)
                     {
-                        knownUserLocations.add(new LatLng(location.getLatitude(), location.getLongitude()));
-                        usersPath.setPoints(knownUserLocations);
-                        if(myLocation != null)
-                        {
-                            Float didtancePassed = myLocation.distanceTo(location);
-                            distanceFromStart+=didtancePassed;
-                            //distView.setText(distanceFromStart.toString());
-                            //Toast.makeText(getApplicationContext(), "Distance: " + didtancePassed.toString() + "m" + "Distance passed from beginning:"
-                              //      + distanceFromStart.toString() + "m", Toast.LENGTH_SHORT).show();
-                        }
-                        myLocation = location;
+                        Float didtancePassed = myLocation.distanceTo(location);
+                        distanceFromStart+=didtancePassed;
+                        Intent i = new Intent(MapsActivity.this, VersusActivity.class);
+                        Float passedDistance = distanceFromStart;
+                        i.putExtra("DISTANCE", passedDistance);
+
+                        //distView.setText(distanceFromStart.toString());
+                        Toast.makeText(getApplicationContext(), "Distance: " + didtancePassed.toString() + "m" + "Distance passed from beginning:"
+                                + distanceFromStart.toString() + "m", Toast.LENGTH_SHORT).show();
                     }
+                   myLocation = location;
                 }
             };
         };
-
-        timerView = findViewById(R.id.timerView);
-        startButton = findViewById(R.id.startButton);
-        endButton = findViewById(R.id.endButton);
-
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTimer();
-                startButton.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        endButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                afterCountDown = false;
-                endButton.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
-
-    private void startTimer()
-    {
-        countDownTimer = new CountDownTimer(timeLeftInMiliseconds , 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                timeLeftInMiliseconds = millisUntilFinished;
-                updateTimer();
-            }
-
-            @Override
-            public void onFinish() {
-                timerRunnging = false;
-                afterCountDown = true;
-                endButton.setVisibility(View.VISIBLE);
-                timerView.setText("");
-            }
-        }.start();
-
-        timerRunnging = true;
-    }
-
-    private void updateTimer()
-    {
-        Integer seconds = (int) timeLeftInMiliseconds % 60000 / 1000;
-        String timeLeftString = seconds.toString();
-        timerView.setText(timeLeftString);
     }
 
     @SuppressLint("MissingPermission")

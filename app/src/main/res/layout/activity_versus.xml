@@ -1,0 +1,64 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".MainActivity"
+    android:background="#F0F1F2"
+    >
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="#676a6b"
+        android:gravity="center"
+        android:textAlignment="gravity"
+        />
+
+    <ProgressBar
+        android:id="@+id/pb"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="26dp"
+        android:max="100"
+        android:progress="50"
+        android:progressDrawable="@drawable/progressbar_states"
+        android:scaleX="25"
+        android:scaleY="4" />
+
+    <ProgressBar
+        android:id="@+id/pb2"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="9dp"
+        android:layout_marginRight="26dp"
+        android:layout_marginBottom="26dp"
+        android:max="100"
+        android:progress="50"
+        android:progressDrawable="@drawable/progressbar_states2"
+        android:scaleX="25"
+        android:scaleY="4" />
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Operation"
+        android:layout_below="@id/pb"
+        android:layout_marginTop="10dp"
+        />
+</RelativeLayout>
