@@ -25,6 +25,7 @@ import android.view.MenuItem;
 public class NavActivity extends AppCompatActivity
         implements RunFragment.OnFragmentInteractionListener,
         TrainFragment.OnFragmentInteractionListener,
+        GraphFragment.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -36,11 +37,10 @@ public class NavActivity extends AppCompatActivity
 
         if(savedInstanceState==null){
             //Load our fragment of exercises
-            RunFragment fragment = null;
-            Class fragmentClass =  RunFragment.class;
+            Fragment fragment = null;
+            Class fragmentClass =  GraphFragment.class;
             try {
-                fragment = (RunFragment) fragmentClass.newInstance();
-                fragment.setContext(this);
+                fragment = (Fragment) fragmentClass.newInstance();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -110,13 +110,13 @@ public class NavActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_history) {
-            fragmentClass = RunFragment.class;
+            fragmentClass = GraphFragment.class;
         } else if (id == R.id.nav_rank) {
             fragmentClass = TrainFragment.class;
         }
         if(fragmentClass!=null){
             try{
-                fragment = (RunFragment) fragmentClass.newInstance();
+                fragment = (Fragment) fragmentClass.newInstance();
             } catch (Exception e){
                 e.printStackTrace();
             }
