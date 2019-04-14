@@ -34,11 +34,15 @@ public class RunFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private Context context;
     private OnFragmentInteractionListener mListener;
 
     public RunFragment() {
         // Required empty public constructor
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     /**
@@ -92,7 +96,7 @@ public class RunFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("versus", "tralalal");
-                Intent intentVersus = new Intent(getContext(), VersusActivity.class);
+                Intent intentVersus = new Intent(context, VersusActivity.class);
                 startActivity(intentVersus);
             }
         });

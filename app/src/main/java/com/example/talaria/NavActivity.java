@@ -36,10 +36,11 @@ public class NavActivity extends AppCompatActivity
 
         if(savedInstanceState==null){
             //Load our fragment of exercises
-            Fragment fragment = null;
+            RunFragment fragment = null;
             Class fragmentClass =  RunFragment.class;
             try {
-                fragment = (Fragment) fragmentClass.newInstance();
+                fragment = (RunFragment) fragmentClass.newInstance();
+                fragment.setContext(this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -113,7 +114,7 @@ public class NavActivity extends AppCompatActivity
         }
         if(fragmentClass!=null){
             try{
-                fragment = (Fragment) fragmentClass.newInstance();
+                fragment = (RunFragment) fragmentClass.newInstance();
             } catch (Exception e){
                 e.printStackTrace();
             }
