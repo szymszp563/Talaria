@@ -1,12 +1,16 @@
 package com.example.talaria;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -91,9 +95,16 @@ public class NavActivity extends AppCompatActivity
         if (id == R.id.nav_run) {
             fragmentClass = TrainFragment.class;
         } else if (id == R.id.nav_train) {
-           fragmentClass = RunFragment.class;
-            Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-            startActivity(i);
+          // fragmentClass = RunFragment.class;
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                Intent mapActivityIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(mapActivityIntent);
+            }
+            else
+            {
+                showSettingsAlert("GPS");
+            }
         } else if (id == R.id.nav_history) {
             fragmentClass = RunFragment.class;
         } else if (id == R.id.nav_rank) {
@@ -118,5 +129,33 @@ public class NavActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void showSettingsAlert(String provider) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+
+        alertDialog.setTitle(provider + " SETTINGS");
+
+        alertDialog
+                .setMessage(provider + " is not enabled! Want to go to settings menu?");
+
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
     }
 }
