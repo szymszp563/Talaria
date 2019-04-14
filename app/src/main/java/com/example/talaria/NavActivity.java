@@ -25,6 +25,7 @@ import android.view.MenuItem;
 public class NavActivity extends AppCompatActivity
         implements RunFragment.OnFragmentInteractionListener,
         TrainFragment.OnFragmentInteractionListener,
+        GraphFragment.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -37,7 +38,7 @@ public class NavActivity extends AppCompatActivity
         if(savedInstanceState==null){
             //Load our fragment of exercises
             Fragment fragment = null;
-            Class fragmentClass =  RunFragment.class;
+            Class fragmentClass =  GraphFragment.class;
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
             } catch (Exception e) {
@@ -93,7 +94,9 @@ public class NavActivity extends AppCompatActivity
         Class fragmentClass = null;
 
         if (id == R.id.nav_run) {
-            fragmentClass = TrainFragment.class;
+            //fragmentClass = RunFragment.class;
+            Intent raceSettingsIntent = new Intent(getApplicationContext(), RaceSettingsActivity.class);
+            startActivity(raceSettingsIntent);
         } else if (id == R.id.nav_train) {
           // fragmentClass = RunFragment.class;
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -105,8 +108,9 @@ public class NavActivity extends AppCompatActivity
             {
                 showSettingsAlert("GPS");
             }
+
         } else if (id == R.id.nav_history) {
-            fragmentClass = RunFragment.class;
+            fragmentClass = GraphFragment.class;
         } else if (id == R.id.nav_rank) {
             fragmentClass = TrainFragment.class;
         }
