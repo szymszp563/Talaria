@@ -18,8 +18,9 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".LoginOrRegister">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".LoginOrRegister"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,10 +32,12 @@
         <activity android:name=".VersusActivity" />
         <activity
             android:name=".NavActivity"
-            android:label="@string/title_activity_nav"
+            android:label="Talaria"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Register" />
-        <activity android:name=".Logging" />
+        <activity android:name=".Register"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".Logging"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
